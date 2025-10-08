@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import '../src/shared/styles/custom-shape-divider.css';
-import '../src/shared/styles/globals.css';
-import Header from '@/src/shared/components/layouts/header';
-import Footer from '@/src/shared/components/layouts/footer';
-import PageDivTop from '@/src/shared/components/pageDivTop';
+
+import '../src/styles/custom-shape-divider.css';
+import '../src/styles/globals.css';
+
+import Providers from '@/src/lib/providers';
+import { Toaster } from 'sonner';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -30,12 +31,8 @@ export default function RootLayout({
         <html lang='en'>
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <Header />
-                <PageDivTop />
-                <main className='min-h-[70vh]'>{children}</main>
-
-                {children}
-                <Footer />
+                <Providers>{children}</Providers>
+                <Toaster />
             </body>
         </html>
     );
