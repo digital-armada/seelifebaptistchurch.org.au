@@ -20,7 +20,6 @@ export async function registerUserAction(
 
     const validation = createUserSchema.safeParse(input);
     if (!validation.success) {
-        // FIX: Changed .errors to .issues
         const errorMessage =
             validation.error.issues[0]?.message || 'Invalid input data.';
         console.error('[SERVER ACTION] Validation failed:', errorMessage);
