@@ -4,6 +4,7 @@ import { nextCookies } from 'better-auth/next-js';
 import { prisma } from '@/src/lib/prisma';
 
 const authConfig: BetterAuthOptions = {
+    baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
     // REMOVE the fieldMap from this object
     database: prismaAdapter(prisma, {
         provider: 'mysql',
