@@ -117,8 +117,7 @@ export default function SupportPage() {
                                     Pastoral Offering
                                 </h2>
                                 <p className='text-muted-foreground'>
-                                    Directly supporting our pastoral team and
-                                    their ministry work
+                                    Directly supporting our pastor.
                                 </p>
                             </div>
                         </div>
@@ -194,11 +193,9 @@ export default function SupportPage() {
                                     Thank You for Your Support
                                 </h3>
                                 <p className='text-accent-foreground/80 text-sm'>
-                                    All donations are tax-deductible and
-                                    receipts will be provided. For any questions
-                                    about giving or to discuss other ways to
-                                    support our ministry, please don't hesitate
-                                    to contact us.
+                                    For any questions about giving or to discuss
+                                    other ways to support our ministry, please
+                                    don't hesitate to contact us.
                                 </p>
                             </div>
                         </div>
