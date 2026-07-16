@@ -1,4 +1,5 @@
 const navigation = [
+    { name: 'Home', href: '/' },
     {
         name: 'About',
         subItems: [

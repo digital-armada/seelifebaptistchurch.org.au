@@ -2,27 +2,31 @@
 import React, { Fragment, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import {
-    Dialog,
-    DialogPanel,
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
     Popover,
     PopoverButton,
     PopoverGroup,
     Transition,
 } from '@headlessui/react';
-import navigation from '@/src/config/menuConstants';
-import Container from '@/src/components/container';
 import {
-    Bars3Icon,
-    ChevronDownIcon,
-    XMarkIcon,
-} from '@heroicons/react/16/solid';
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from '@/src/components/ui/collapsible';
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetHeader,
+    SheetTitle,
+} from '@/src/components/ui/sheet';
+import { cn } from '@/src/lib/utils';
+import navigation from '@/src/config/menuConstants';
+import { ChevronDown, Menu, X } from 'lucide-react';
 
 function classNames(...classes: string[]): string {
     return classes.filter(Boolean).join(' ');
 }
+
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const pathname = usePathname();
@@ -35,16 +39,16 @@ export default function Header() {
     };
 
     return (
-        <div className='bg-white '>
-            <Container>
+        <div className='bg-white/80 backdrop-blur-sm'>
+            <div className='w-full max-w-6xl px-10 py-4 mx-auto'>
                 <nav
-                    className='flex items-center justify-between'
+                    className='flex items-center justify-between py-1'
                     aria-label='Global'>
                     {/* LOGO */}
                     <div className='flex lg:flex-1'>
-                        <a href='/' className='-m-1.5 p-1.5'>
+                        <a href='/' className='-m-1 p-1 transition-transform duration-200 hover:scale-105'>
                             <img
-                                className='w-auto h-14'
+                                className='w-auto h-9'
                                 src='/images/logo.png'
                                 alt='see life logo'
                             />
@@ -54,146 +58,155 @@ export default function Header() {
                     <div className='flex lg:hidden'>
                         <button
                             type='button'
-                            className='-m-2.5 inline-flex cursor-pointer items-center justify-center rounded-md p-2.5 text-gray-700'
+                            className='-m-2 inline-flex cursor-pointer items-center justify-center rounded-lg p-1.5 text-gray-700 transition-colors duration-200 hover:bg-gray-100'
                             onClick={() => setMobileMenuOpen(true)}>
                             <span className='sr-only'>Open main menu</span>
-                            <Bars3Icon className='w-6 h-6' aria-hidden='true' />
+                            <Menu className='w-5 h-5' aria-hidden='true' />
                         </button>
                     </div>
 
-                    <PopoverGroup className='hidden lg:flex lg:gap-x-12'>
-                        {navigation.map(item => (
-                            <Popover key={item.name} className='relative'>
-                                {item.subItems ? (
-                                    <PopoverButton className={'flex cursor-pointer items-center text-sm font-semibold leading-6 gap-x-1 outline-hidden ' + (isActive(item) ? 'text-blue-600' : 'text-gray-900')}>
-                                        {item.name}
-                                        <ChevronDownIcon
-                                            className='flex-none w-5 h-5 text-gray-400'
-                                            aria-hidden='true'
-                                        />
-                                    </PopoverButton>
-                                ) : (
-                                    <a
-                                        href={item.href || '#'}
-                                        className={'cursor-pointer text-sm font-semibold leading-6 ' + (isActive(item) ? 'text-blue-600' : 'text-gray-900')}>
-                                        {item.name}
-                                    </a>
-                                )}
+                    <PopoverGroup className='hidden lg:flex lg:gap-x-2'>
+                        {navigation.map(item => {
+                            const navLinkClass =
+                                'relative flex cursor-pointer items-center text-[13px] font-medium tracking-wide leading-6 gap-x-1 rounded-lg px-3 py-1.5 outline-hidden transition-all duration-200 ' +
+                                (isActive(item)
+                                    ? 'text-blue-600 bg-blue-50/60'
+                                    : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50');
+                            return (
+                                <Popover key={item.name} className='relative'>
+                                    {item.subItems ? (
+                                        <PopoverButton className={navLinkClass}>
+                                            <span>{item.name}</span>
+                                            <ChevronDown
+                                                className='flex-none w-3.5 h-3.5 text-gray-400 transition-transform duration-200 group-data-[state=open]:rotate-180'
+                                                aria-hidden='true'
+                                            />
+                                        </PopoverButton>
+                                    ) : (
+                                        <a href={item.href || '#'} className={navLinkClass}>
+                                            <span>{item.name}</span>
+                                        </a>
+                                    )}
 
-                                {item.subItems && (
-                                    <Transition
-                                        as={React.Fragment}
-                                        enter='transition ease-out duration-200'
-                                        enterFrom='opacity-0 translate-y-1'
-                                        enterTo='opacity-100 translate-y-0'
-                                        leave='transition ease-in duration-150'
-                                        leaveFrom='opacity-100 translate-y-0'
-                                        leaveTo='opacity-0 translate-y-1'>
-                                        <Popover.Panel className='absolute z-10 mt-3 overflow-hidden bg-white shadow-lg -left-40 top-full w-60 rounded-3xl ring-1 ring-gray-900/5'>
-                                            <div className='p-4'>
+                                    {item.subItems && (
+                                        <Transition
+                                            as={React.Fragment}
+                                            enter='transition ease-out duration-200'
+                                            enterFrom='opacity-0 translate-y-1'
+                                            enterTo='opacity-100 translate-y-0'
+                                            leave='transition ease-in duration-150'
+                                            leaveFrom='opacity-100 translate-y-0'
+                                            leaveTo='opacity-0 translate-y-1'>
+                                            <Popover.Panel className='absolute z-10 mt-2 overflow-hidden bg-white shadow-xl ring-1 ring-gray-900/5 rounded-xl -left-20 top-full w-52'>
+                                                <div className='p-1.5'>
                                                 {item.subItems.map(subItem => (
                                                     <a
                                                         key={subItem.name}
                                                         href={subItem.href}
-                                                        className={'relative flex cursor-pointer items-center p-4 text-sm leading-6 rounded-lg group gap-x-6 hover:bg-gray-50 ' + (pathname === subItem.href ? 'text-blue-600 bg-blue-50' : '')}>
-                                                        {subItem.name}{' '}
+                                                        className={'relative flex cursor-pointer items-center px-3 py-1.5 text-[13px] font-medium tracking-wide leading-5 rounded-lg transition-colors duration-150 gap-x-3 hover:bg-gray-50 ' + (pathname === subItem.href ? 'text-blue-600 bg-blue-50/60' : 'text-gray-700 hover:text-gray-900')}>
+                                                        {subItem.name}
                                                     </a>
                                                 ))}
-                                            </div>
-                                            {/* Other content for calls to action */}
-                                        </Popover.Panel>
-                                    </Transition>
-                                )}
-                            </Popover>
-                        ))}
-
-                        {/* Calls to action */}
+                                                </div>
+                                            </Popover.Panel>
+                                        </Transition>
+                                    )}
+                                </Popover>
+                            );
+                        })}
                     </PopoverGroup>
                 </nav>
 
-                <Dialog
-                    as='div'
-                    className='lg:hidden'
-                    open={mobileMenuOpen}
-                    onClose={setMobileMenuOpen}>
-                    <div className='fixed inset-0 z-10' />
-                    <DialogPanel className='fixed inset-y-0 right-0 z-10 w-full px-6 py-6 overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10'>
-                        <div className='flex items-center justify-between'>
-                            <a href='#' className='-m-1.5 cursor-pointer p-1.5'>
+                <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+                    <SheetContent
+                        side='right'
+                        className='w-[85%] max-w-sm gap-0 p-0'>
+                        <SheetHeader className='flex flex-row items-center justify-between border-b border-gray-100 p-3'>
+                            <SheetTitle className='sr-only'>Navigation</SheetTitle>
+                            <a
+                                href='/'
+                                className='-m-1 cursor-pointer p-1'
+                                onClick={() => setMobileMenuOpen(false)}>
                                 <img
-                                    className='w-auto h-16'
+                                    className='w-auto h-9'
                                     src='/images/logo.png'
-                                    alt=''
+                                    alt='see life logo'
                                 />
                             </a>
-                            <button
-                                type='button'
-                                className='-m-2.5 cursor-pointer rounded-md p-2.5 text-gray-700'
-                                onClick={() => setMobileMenuOpen(false)}>
-                                <span className='sr-only'>Close menu</span>
-                                <XMarkIcon
-                                    className='w-6 h-6'
-                                    aria-hidden='true'
-                                />
-                            </button>
-                        </div>
-                        <div className='flow-root mt-6'>
-                            <div className='-my-6 divide-y divide-gray-500/10'>
-                                <div className='py-6 space-y-2'>
-                                    {navigation.map(item => (
-                                        <React.Fragment key={item.name}>
-                                            {item.subItems ? (
-                                                <Disclosure>
-                                                    {({ open }) => (
-                                                        <>
-                                                            <DisclosureButton className={'flex w-full cursor-pointer items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 hover:bg-gray-50 ' + (isActive(item) ? 'text-blue-600' : 'text-gray-900')}>
-                                                                {item.name}
-                                                                <ChevronDownIcon
-                                                                    className={classNames(
-                                                                        open
-                                                                            ? 'rotate-180'
-                                                                            : '',
-                                                                        'h-5 w-5 flex-none'
-                                                                    )}
-                                                                    aria-hidden='true'
-                                                                />
-                                                            </DisclosureButton>
-                                                            <DisclosurePanel className='mt-2 space-y-2'>
-                                                                {item.subItems.map(
-                                                                    subItem => (
-                                                                        <a
-                                                                            key={
-                                                                                subItem.name
-                                                                            }
-                                                                            href={
-                                                                                subItem.href
-                                                                            }
-                                                                            className={'block cursor-pointer py-2 pl-6 pr-3 text-sm font-semibold leading-7 rounded-lg hover:bg-gray-50 ' + (pathname === subItem.href ? 'text-blue-600 bg-blue-50' : 'text-gray-900')}>
-                                                                            {
-                                                                                subItem.name
-                                                                            }
-                                                                        </a>
-                                                                    )
-                                                                )}
-                                                            </DisclosurePanel>
-                                                        </>
-                                                    )}
-                                                </Disclosure>
-                                            ) : (
+                        </SheetHeader>
+
+                        <nav className='flex-1 overflow-y-auto px-3 py-2'>
+                            <div className='space-y-1'>
+                                {navigation.map(item => (
+                                    <React.Fragment key={item.name}>
+                                        {item.subItems ? (
+                                            <Collapsible className='group/collapsible'>
+                                                <CollapsibleTrigger
+                                                    className={cn(
+                                                        'flex w-full cursor-pointer items-center justify-between rounded-xl px-4 py-2.5 text-[15px] font-medium tracking-wide leading-6 transition-colors duration-200 hover:bg-gray-50',
+                                                        isActive(item)
+                                                            ? 'text-blue-600'
+                                                            : 'text-gray-900'
+                                                    )}>
+                                                    {item.name}
+                                                    <ChevronDown
+                                                        className='h-4 w-4 flex-none text-gray-400 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-180'
+                                                        aria-hidden='true'
+                                                    />
+                                                </CollapsibleTrigger>
+                                                <CollapsibleContent className='overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down'>
+                                                    <div className='mt-1 mb-2 space-y-1'>
+                                                        {item.subItems.map(
+                                                            subItem => (
+                                                                <a
+                                                                    key={
+                                                                        subItem.name
+                                                                    }
+                                                                    href={
+                                                                        subItem.href
+                                                                    }
+                                                                    onClick={() =>
+                                                                        setMobileMenuOpen(
+                                                                            false
+                                                                        )
+                                                                    }
+                                                                    className={cn(
+                                                                        'block cursor-pointer py-1.5 pl-8 pr-4 text-[13px] font-medium leading-6 rounded-lg transition-colors duration-150 hover:bg-gray-50',
+                                                                        pathname ===
+                                                                            subItem.href
+                                                                            ? 'text-blue-600 bg-blue-50/60'
+                                                                            : 'text-gray-600'
+                                                                    )}>
+                                                                    {
+                                                                        subItem.name
+                                                                    }
+                                                                </a>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                </CollapsibleContent>
+                                            </Collapsible>
+                                        ) : (
+                                            <SheetClose asChild>
                                                 <a
                                                     href={item.href}
-                                                    className={'block cursor-pointer px-3 py-2 -mx-3 text-base font-semibold leading-7 rounded-lg hover:bg-gray-50 ' + (pathname === item.href ? 'text-blue-600 bg-blue-50' : 'text-gray-900')}>
+                                                    className={cn(
+                                                        'block cursor-pointer px-4 py-2.5 text-[15px] font-medium tracking-wide leading-6 rounded-xl transition-colors duration-200 hover:bg-gray-50',
+                                                        isActive(item)
+                                                            ? 'text-blue-600'
+                                                            : 'text-gray-900'
+                                                    )}>
                                                     {item.name}
                                                 </a>
-                                            )}
-                                        </React.Fragment>
-                                    ))}
-                                </div>
+                                            </SheetClose>
+                                        )}
+                                    </React.Fragment>
+                                ))}
                             </div>
-                        </div>
-                    </DialogPanel>
-                </Dialog>
-            </Container>
+                        </nav>
+                    </SheetContent>
+                </Sheet>
+            </div>
         </div>
     );
 }
