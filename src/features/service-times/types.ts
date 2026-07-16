@@ -30,8 +30,17 @@ export interface UpdateServiceTimeInput {
     day?: DayOfWeek;
     time?: string;
 }
-export interface UpdateServiceTimeInput {
-    name?: string;
-    description?: string;
-    time?: string;
+
+const DAY_LABELS: Record<DayOfWeek, string> = {
+    SUNDAY: 'Sunday',
+    MONDAY: 'Monday',
+    TUESDAY: 'Tuesday',
+    WEDNESDAY: 'Wednesday',
+    THURSDAY: 'Thursday',
+    FRIDAY: 'Friday',
+    SATURDAY: 'Saturday',
+};
+
+export function dayLabel(day: DayOfWeek): string {
+    return DAY_LABELS[day] ?? day;
 }
