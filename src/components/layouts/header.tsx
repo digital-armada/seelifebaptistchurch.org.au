@@ -1,5 +1,6 @@
 'use client';
 import React, { Fragment, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import {
     Dialog,
     DialogPanel,
@@ -24,6 +25,14 @@ function classNames(...classes: string[]): string {
 }
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const pathname = usePathname();
+    const isActive = (item: (typeof navigation)[number]) => {
+        if (item.href && pathname === item.href) return true;
+        if (item.subItems) {
+            return item.subItems.some(sub => pathname === sub.href);
+        }
+        return false;
+    };
 
     return (
         <div className='bg-white '>
@@ -33,7 +42,7 @@ export default function Header() {
                     aria-label='Global'>
                     {/* LOGO */}
                     <div className='flex lg:flex-1'>
-                        <a href='/' className='-m-1.5 p-1.5 cursor-pointer'>
+                        <a href='/' className='-m-1.5 p-1.5'>
                             <img
                                 className='w-auto h-14'
                                 src='/images/logo.png'
@@ -45,7 +54,7 @@ export default function Header() {
                     <div className='flex lg:hidden'>
                         <button
                             type='button'
-                            className='-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700'
+                            className='-m-2.5 inline-flex cursor-pointer items-center justify-center rounded-md p-2.5 text-gray-700'
                             onClick={() => setMobileMenuOpen(true)}>
                             <span className='sr-only'>Open main menu</span>
                             <Bars3Icon className='w-6 h-6' aria-hidden='true' />
@@ -56,7 +65,7 @@ export default function Header() {
                         {navigation.map(item => (
                             <Popover key={item.name} className='relative'>
                                 {item.subItems ? (
-                                    <PopoverButton className='flex items-center text-sm font-semibold leading-6 text-gray-900 gap-x-1'>
+                                    <PopoverButton className={'flex cursor-pointer items-center text-sm font-semibold leading-6 gap-x-1 outline-hidden ' + (isActive(item) ? 'text-blue-600' : 'text-gray-900')}>
                                         {item.name}
                                         <ChevronDownIcon
                                             className='flex-none w-5 h-5 text-gray-400'
@@ -66,7 +75,7 @@ export default function Header() {
                                 ) : (
                                     <a
                                         href={item.href || '#'}
-                                        className='text-sm font-semibold leading-6 text-gray-900'>
+                                        className={'cursor-pointer text-sm font-semibold leading-6 ' + (isActive(item) ? 'text-blue-600' : 'text-gray-900')}>
                                         {item.name}
                                     </a>
                                 )}
@@ -86,7 +95,7 @@ export default function Header() {
                                                     <a
                                                         key={subItem.name}
                                                         href={subItem.href}
-                                                        className='relative flex items-center p-4 text-sm leading-6 rounded-lg group gap-x-6 hover:bg-gray-50'>
+                                                        className={'relative flex cursor-pointer items-center p-4 text-sm leading-6 rounded-lg group gap-x-6 hover:bg-gray-50 ' + (pathname === subItem.href ? 'text-blue-600 bg-blue-50' : '')}>
                                                         {subItem.name}{' '}
                                                     </a>
                                                 ))}
@@ -110,7 +119,7 @@ export default function Header() {
                     <div className='fixed inset-0 z-10' />
                     <DialogPanel className='fixed inset-y-0 right-0 z-10 w-full px-6 py-6 overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10'>
                         <div className='flex items-center justify-between'>
-                            <a href='#' className='-m-1.5 p-1.5'>
+                            <a href='#' className='-m-1.5 cursor-pointer p-1.5'>
                                 <img
                                     className='w-auto h-16'
                                     src='/images/logo.png'
@@ -119,7 +128,7 @@ export default function Header() {
                             </a>
                             <button
                                 type='button'
-                                className='-m-2.5 rounded-md p-2.5 text-gray-700'
+                                className='-m-2.5 cursor-pointer rounded-md p-2.5 text-gray-700'
                                 onClick={() => setMobileMenuOpen(false)}>
                                 <span className='sr-only'>Close menu</span>
                                 <XMarkIcon
@@ -137,7 +146,7 @@ export default function Header() {
                                                 <Disclosure>
                                                     {({ open }) => (
                                                         <>
-                                                            <DisclosureButton className='flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'>
+                                                            <DisclosureButton className={'flex w-full cursor-pointer items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 hover:bg-gray-50 ' + (isActive(item) ? 'text-blue-600' : 'text-gray-900')}>
                                                                 {item.name}
                                                                 <ChevronDownIcon
                                                                     className={classNames(
@@ -159,7 +168,7 @@ export default function Header() {
                                                                             href={
                                                                                 subItem.href
                                                                             }
-                                                                            className='block py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50'>
+                                                                            className={'block cursor-pointer py-2 pl-6 pr-3 text-sm font-semibold leading-7 rounded-lg hover:bg-gray-50 ' + (pathname === subItem.href ? 'text-blue-600 bg-blue-50' : 'text-gray-900')}>
                                                                             {
                                                                                 subItem.name
                                                                             }
@@ -173,7 +182,7 @@ export default function Header() {
                                             ) : (
                                                 <a
                                                     href={item.href}
-                                                    className='block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50'>
+                                                    className={'block cursor-pointer px-3 py-2 -mx-3 text-base font-semibold leading-7 rounded-lg hover:bg-gray-50 ' + (pathname === item.href ? 'text-blue-600 bg-blue-50' : 'text-gray-900')}>
                                                     {item.name}
                                                 </a>
                                             )}

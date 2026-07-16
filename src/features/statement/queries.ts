@@ -83,7 +83,7 @@ export function useUpdateStatementOrder() {
                 const updatedStatements = previousStatements
                     .map(stmt => {
                         const newOrderItem = newOrder.find(
-                            item => item.id === stmt.id
+                            item => item.id === stmt.id,
                         );
                         return newOrderItem
                             ? {

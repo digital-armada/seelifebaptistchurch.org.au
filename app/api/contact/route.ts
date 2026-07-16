@@ -32,7 +32,10 @@ ${message}`;
         console.log('Sending email with Brevo...');
         const result = await client.transactionalEmails.sendTransacEmail({
             to: [{ email: 'info@seelifebaptistchurch.org.au' }],
-            sender: { email: 'noreply@seelifebaptistchurch.org.au', name: 'See Life Baptist Church Website' },
+            sender: {
+                email: 'noreply@seelifebaptistchurch.org.au',
+                name: 'See Life Baptist Church Website',
+            },
             replyTo: { email, name },
             subject: `Contact Form: ${name}`,
             textContent,
@@ -44,8 +47,12 @@ ${message}`;
     } catch (error) {
         console.error('Brevo error details:', error);
         return NextResponse.json(
-            { error: 'Failed to send message', details: error instanceof Error ? error.message : 'Unknown error' },
-            { status: 500 }
+            {
+                error: 'Failed to send message',
+                details:
+                    error instanceof Error ? error.message : 'Unknown error',
+            },
+            { status: 500 },
         );
     }
 }

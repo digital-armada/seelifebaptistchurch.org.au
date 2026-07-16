@@ -47,7 +47,7 @@ export default async function Footer() {
                                 <li key={idx}>
                                     <Link
                                         href={link.href}
-                                        className='text-sm font-light hover:text-white transition-colors'>
+                                        className='cursor-pointer text-sm font-light hover:text-white transition-colors'>
                                         {link.name}
                                     </Link>
                                 </li>
@@ -60,7 +60,7 @@ export default async function Footer() {
                                 href='https://www.facebook.com/profile.php?id=61552330245258'
                                 target='_blank'
                                 rel='noopener noreferrer'
-                                className='inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-700 transition-colors'
+                                className='inline-flex cursor-pointer items-center justify-center w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-700 transition-colors'
                                 aria-label='Visit our Facebook page'>
                                 <svg
                                     className='w-5 h-5 fill-current'

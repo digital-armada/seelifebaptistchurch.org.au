@@ -8,6 +8,7 @@ import { queryKeys } from '@/src/lib/queryKeys';
 import { getQueryClient } from '@/src/lib/queryClient';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import PastorsWelcome from '@/src/components/home/PastorsWelcome';
+import StatementOfFaithSection from '@/src/components/home/StatementOfFaithSection';
 
 export default async function HomePage() {
     const queryClient = getQueryClient();
@@ -37,6 +38,7 @@ export default async function HomePage() {
                 <ServiceTimes />
             </div>
             <PastorsWelcome />
+            <StatementOfFaithSection />
             <FAQ />
         </HydrationBoundary>
     );
