@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "serviceName": "Main Sunday Morning Service",
+        "description": "",
+        "time": "10 am"
+    },
+    {
+        "id": 2,
+        "serviceName": "Wednesday",
+        "description": "",
+        "time": "6:30 pm"
+    },
+    {
+        "id": 3,
+        "serviceName": "Ladies Bible Study",
+        "description": "",
+        "time": "Alternate Thursdays 10am"
+    },
+    {
+        "id": 4,
+        "serviceName": "Mens Breakfast",
+        "description": "",
+        "time": "Various Times"
+    },
+    {
+        "id": 5,
+        "serviceName": "Adult Sunday School",
+        "description": "",
+        "time": "9 am"
+    },
+    {
+        "id": 6,
+        "serviceName": "Small Group Bible Studies",
+        "description": "",
+        "time": "Various Times"
+    }
+]
