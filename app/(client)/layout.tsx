@@ -6,7 +6,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
     return (
         <>
             <Header />
-            <PageDivTop />
+            {/* <PageDivTop /> */}
             <main className='min-h-[70vh]'>{children}</main>
             <Visit />
             <Footer />
