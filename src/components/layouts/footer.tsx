@@ -18,7 +18,7 @@ export default async function Footer() {
     }
 
     const allLinks = navigation.flatMap(item =>
-        item.subItems ? item.subItems : [item]
+        item.subItems ? item.subItems : [item],
     );
 
     return (
@@ -29,7 +29,7 @@ export default async function Footer() {
                     <div className='flex justify-center mb-8'>
                         <div className='w-32 sm:w-40'>
                             <Image
-                                src='/images/logoFooter.png'
+                                src='/images/logofooter.png'
                                 alt='See Life Baptist Church Logo'
                                 width={200}
                                 height={100}
